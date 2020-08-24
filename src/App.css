@@ -1,4 +1,5 @@
-*,
+/* TOODO BOTH APPS */
+/* *,
 *::after,
 *::before {
   padding: 0;
@@ -41,4 +42,18 @@ form {
 .completedTodo {
   background-color: darkgray;
   text-decoration: line-through;
+} */
+
+
+/* AXIOS  */
+.App {
+  min-height: 100vh;
+}
+
+.card {
+  margin-top: 125px;
+}
+
+img {
+  margin-top: -80px;
 }

@@ -1,47 +1,44 @@
 import React, {useState, useEffect }from 'react';
+//  useEffect ----By using this Hook, you tell React that your component needs to do something after render. React will remember the function you passed (we’ll refer to it as our “effect”), and call it later after performing the DOM updates
+// Does useEffect run after every render? Yes! By default, it runs both after the first render and after every update.
 
-import {Container} from "reactstrap";
+import {Container, Row, Col} from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
+import Axios from "axios";
 
-import Todos from "../src/localStorage/Todos";
-import TodoForm from "../src/localStorage/TodoForm";
+import MyCard from "../src/AxiosOne.js/MyCard";
 
 
 const App = () => {
 
-  const [todos, setTodos]=useState([])
+  // storing data here
+  const [details, setDetails] = useState({});
 
-  useEffect(()=> {
-    const localTodos = localStorage.getItem("todos")
+// to use asynchroneous req==async and await
+const fetchDetails = async () => {
+  const {data} = await Axios.get("https://randomuser.me/api/");
+  console.log("RESP:", data);
 
-    console.log({localStorage});
-    if(localTodos) {
-      setTodos(JSON.parse(localTodos))
-    }
-  }, [])
+  const details = data.results[0];
+  setDetails(details);
+};
 
-  const addTodos = async todo => {
-    setTodos([...todos, todo])
-  }
-
-  useEffect(()=>{
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
-
-  const markFinished = id => {
-    setTodos(todos.filter(todo => todo.id !== id))
-  };
-
+// how we call :   useEffect(() =>{}, [])
+useEffect(() =>{
+  fetchDetails()
+}, []);
 
   return (
- 
-    <Container>
-      <h1>Todo with Local Storage</h1>
-      <Todos todos={todos} markFinished={markFinished} />
-      {/* name of the method in a form */}
-      <TodoForm  addTodos={addTodos} />
+    <Container fluid className="p-4 bg-primary App">
+      <Row>
+        <Col md={4} className="offset-md-4">
+          <MyCard details={details} />
+        </Col>
+      </Row>
     </Container>
+     
+
   );
 };
 
